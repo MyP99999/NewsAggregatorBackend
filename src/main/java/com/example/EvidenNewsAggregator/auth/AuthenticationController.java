@@ -3,7 +3,9 @@ package com.example.EvidenNewsAggregator.auth;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
 import com.example.EvidenNewsAggregator.responses.MessageResponse;
 import com.example.EvidenNewsAggregator.user.UserRepository;
+import com.example.EvidenNewsAggregator.validations.RegisterValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -20,18 +22,23 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
     private final UserRepository userRepository; // Injected via constructor
+    private final RegisterValidation registerValidation;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(
-            @RequestBody RegisterRequest request
-    ) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request)
+    {
+        ResponseEntity<Object> validationResponse = registerValidation.validateRegistration(request);
         if (request.getUsername() == null || request.getUsername().isEmpty() ||
                 request.getEmail() == null || request.getEmail().isEmpty() ||
                 request.getPassword() == null || request.getPassword().isEmpty()) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: All fields are required!"));
+        }else if (validationResponse != null)
+        {
+            return validationResponse;
         }
+
         return ResponseEntity.ok(service.register(request));
     }
 
