@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class UserRepository {
+public class UserService {
     private final DSLContext dslContext;
 
     @Autowired
-    public UserRepository(DSLContext dslContext) {
+    public UserService(DSLContext dslContext) {
         this.dslContext = dslContext;
     }
 

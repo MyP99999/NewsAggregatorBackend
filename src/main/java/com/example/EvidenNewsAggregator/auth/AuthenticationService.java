@@ -3,7 +3,7 @@ package com.example.EvidenNewsAggregator.auth;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
 import com.example.EvidenNewsAggregator.jwt.JwtService;
 import com.example.EvidenNewsAggregator.user.UserDetailServiceImp;
-import com.example.EvidenNewsAggregator.user.UserRepository;
+import com.example.EvidenNewsAggregator.user.UserService;
 import com.example.EvidenNewsAggregator.validations.RegisterValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserDetailServiceImp userDetailServiceImp;
@@ -48,7 +48,7 @@ public class AuthenticationService {
         newUser.setRoleId(1);
 
         // Save the new user to the database
-        userRepository.add(newUser);
+        userService.add(newUser);
 
         // Authenticate the new user
         UserDetails userDetails = userDetailServiceImp.loadUserByUsername(newUser.getUsername());

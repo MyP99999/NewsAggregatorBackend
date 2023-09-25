@@ -2,26 +2,24 @@ package com.example.EvidenNewsAggregator.auth;
 
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
 import com.example.EvidenNewsAggregator.responses.MessageResponse;
-import com.example.EvidenNewsAggregator.user.UserRepository;
+import com.example.EvidenNewsAggregator.user.UserService;
 import com.example.EvidenNewsAggregator.validations.RegisterValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class AuthenticationController {
 
     private final AuthenticationService service;
-    private final UserRepository userRepository; // Injected via constructor
+    private final UserService userService; // Injected via constructor
     private final RegisterValidation registerValidation;
 
     @PostMapping("/register")

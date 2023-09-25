@@ -1,7 +1,6 @@
 package com.example.EvidenNewsAggregator.user;
 
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
-import com.example.EvidenNewsAggregator.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,13 +15,13 @@ import java.util.Collection;
 public class UserDetailServiceImp implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Users user = userRepository.findByUsername(username);
+            Users user = userService.findByUsername(username);
             return UserDetailImp.build(user);
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException("User not found with email: " + username);

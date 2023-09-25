@@ -3,7 +3,7 @@ package com.example.EvidenNewsAggregator.validations;
 
 import com.example.EvidenNewsAggregator.auth.RegisterRequest;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
-import com.example.EvidenNewsAggregator.user.UserRepository;
+import com.example.EvidenNewsAggregator.user.UserService;
 import com.example.EvidenNewsAggregator.utils.LogAndResponseUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class RegisterValidation {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
     @Autowired
@@ -34,8 +34,8 @@ public class RegisterValidation {
         String methodName = "validateRegistration - ";
 
         // Check if the user already exists
-        Users existingUser = userRepository.findByUsername(request.getUsername());
-        Users existingEmail = userRepository.findByEmail(request.getEmail());
+        Users existingUser = userService.findByUsername(request.getUsername());
+        Users existingEmail = userService.findByEmail(request.getEmail());
 
         if (existingUser != null) {
             return logAndResponseUtil.generate(logger, methodName, "User already exists with this username", HttpStatus.CONFLICT, null);

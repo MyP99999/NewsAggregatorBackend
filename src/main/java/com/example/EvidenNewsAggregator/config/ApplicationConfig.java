@@ -1,8 +1,9 @@
 package com.example.EvidenNewsAggregator.config;
 
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
-import com.example.EvidenNewsAggregator.user.UserRepository;
+import com.example.EvidenNewsAggregator.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,12 +27,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private final UserService userService;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Users user = userRepository.findByUsername(username);
+            Users user = userService.findByUsername(username);
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }
