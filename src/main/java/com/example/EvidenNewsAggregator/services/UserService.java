@@ -1,4 +1,4 @@
-package com.example.EvidenNewsAggregator.user;
+package com.example.EvidenNewsAggregator.services;
 
 import com.example.EvidenNewsAggregator.entities.Tables;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("userService")
 public class UserService implements GenericRepository<Users> {
     private final DSLContext dslContext;
 

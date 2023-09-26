@@ -1,21 +1,20 @@
-package com.example.EvidenNewsAggregator.auth;
+package com.example.EvidenNewsAggregator.services;
 
+import com.example.EvidenNewsAggregator.auth.AuthenticationRequest;
+import com.example.EvidenNewsAggregator.auth.AuthenticationResponse;
+import com.example.EvidenNewsAggregator.auth.RegisterRequest;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
 import com.example.EvidenNewsAggregator.jwt.JwtService;
 import com.example.EvidenNewsAggregator.user.UserDetailServiceImp;
-import com.example.EvidenNewsAggregator.user.UserService;
+import com.example.EvidenNewsAggregator.services.UserService;
 import com.example.EvidenNewsAggregator.validations.RegisterValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

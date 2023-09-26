@@ -1,7 +1,7 @@
 package com.example.EvidenNewsAggregator.config;
 
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
-import com.example.EvidenNewsAggregator.user.UserService;
+import com.example.EvidenNewsAggregator.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Configuration

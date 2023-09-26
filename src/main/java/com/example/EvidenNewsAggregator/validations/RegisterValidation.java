@@ -3,7 +3,7 @@ package com.example.EvidenNewsAggregator.validations;
 
 import com.example.EvidenNewsAggregator.auth.RegisterRequest;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
-import com.example.EvidenNewsAggregator.user.UserService;
+import com.example.EvidenNewsAggregator.services.UserService;
 import com.example.EvidenNewsAggregator.utils.LogAndResponseUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

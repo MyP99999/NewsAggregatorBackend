@@ -1,11 +1,12 @@
-package com.example.EvidenNewsAggregator.auth;
+package com.example.EvidenNewsAggregator.controllers;
 
-import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
+import com.example.EvidenNewsAggregator.auth.AuthenticationRequest;
+import com.example.EvidenNewsAggregator.auth.RegisterRequest;
 import com.example.EvidenNewsAggregator.responses.MessageResponse;
-import com.example.EvidenNewsAggregator.user.UserService;
+import com.example.EvidenNewsAggregator.services.AuthenticationService;
+import com.example.EvidenNewsAggregator.services.UserService;
 import com.example.EvidenNewsAggregator.validations.RegisterValidation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -19,7 +20,6 @@ import org.springframework.http.HttpStatus;
 public class AuthenticationController {
 
     private final AuthenticationService service;
-    private final UserService userService; // Injected via constructor
     private final RegisterValidation registerValidation;
 
     @PostMapping("/register")
