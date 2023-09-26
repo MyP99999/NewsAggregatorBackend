@@ -2,13 +2,15 @@ package com.example.EvidenNewsAggregator.user;
 
 import com.example.EvidenNewsAggregator.entities.Tables;
 import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
+import com.example.EvidenNewsAggregator.repostories.GenericRepository;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-public class UserService {
+@Service
+public class UserService implements GenericRepository<Users> {
     private final DSLContext dslContext;
 
     @Autowired
@@ -43,6 +45,27 @@ public class UserService {
                         user.getPassword(),
                         user.getRoleId())
                 .execute();
+    }
+
+    @Override
+    public int deleteById(Integer t) {
+        return 0;
+    }
+
+    @Override
+    public Iterable<Users> findAll() {
+        return dslContext.selectFrom(Tables.USERS)
+                .fetchInto(Users.class);
+    }
+
+    @Override
+    public Users findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public int update(Users users) {
+        return 0;
     }
 
 //    public List<Users> findAllUsers() {
