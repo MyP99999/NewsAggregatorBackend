@@ -61,6 +61,6 @@ public class AuthenticationController {
             }
         }
 
-        return ResponseEntity.ok(new MessageResponse("Authentication successful!"));
+        return ResponseEntity.ok(service.authenticate(request));
     }
 }
