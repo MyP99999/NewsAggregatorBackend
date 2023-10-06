@@ -4,6 +4,7 @@ import com.example.EvidenNewsAggregator.entities.tables.pojos.Users;
 import com.example.EvidenNewsAggregator.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +32,11 @@ public class ApplicationConfig {
     private final UserService userService;
 
     @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
+    }
+
+    @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
             Users user = userService.findByUsername(username);
@@ -37,7 +44,7 @@ public class ApplicationConfig {
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }
             Collection<? extends GrantedAuthority> authorities = getAuthoritiesByRoleId(user.getRoleId());
-            
+
             return User.builder()
                     .username(user.getUsername())
                     .password(user.getPassword())
