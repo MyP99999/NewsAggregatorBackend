@@ -39,9 +39,13 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<String> createArticle(@RequestBody Articles article) {
-        articleService.add(article);
-
-        return ResponseEntity.ok("Article has been created.");
+        try {
+            articleService.add(article);
+            return ResponseEntity.ok("Article has been created.");
+        } catch (IllegalArgumentException e) {
+            // Handle the exception and return an error response
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

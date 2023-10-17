@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class ArticleService implements GenericRepository<Articles> {
     private final DSLContext dslContext;
@@ -22,29 +25,33 @@ public class ArticleService implements GenericRepository<Articles> {
     @Override
     @Transactional
     public void add(Articles article) {
-        dslContext.insertInto(Tables.ARTICLES,
-                        Tables.ARTICLES.TITLE,
-                        Tables.ARTICLES.DATE,
-                        Tables.ARTICLES.DESCRIPTION,
-                        Tables.ARTICLES.RATING,
-                        Tables.ARTICLES.SOURCE_LINK,
-                        Tables.ARTICLES.NAME,
-                        Tables.ARTICLES.APPROVED,
-                        Tables.ARTICLES.IMAGE,
-                        Tables.ARTICLES.CATEGORY_ID,
-                        Tables.ARTICLES.USER_ID)
-                .values(
-                        article.getTitle(),
-                        article.getDate(),
-                        article.getDescription(),
-                        article.getRating(),
-                        article.getSourceLink(),
-                        article.getName(),
-                        article.getApproved(),
-                        article.getImage(),
-                        article.getCategoryId(),
-                        article.getUserId())
-                .execute();
+        if (containsBadWords(article)) {
+            throw new IllegalArgumentException("The article contains inappropriate content.");
+        } else {
+            dslContext.insertInto(Tables.ARTICLES,
+                            Tables.ARTICLES.TITLE,
+                            Tables.ARTICLES.DATE,
+                            Tables.ARTICLES.DESCRIPTION,
+                            Tables.ARTICLES.RATING,
+                            Tables.ARTICLES.SOURCE_LINK,
+                            Tables.ARTICLES.NAME,
+                            Tables.ARTICLES.APPROVED,
+                            Tables.ARTICLES.IMAGE,
+                            Tables.ARTICLES.CATEGORY_ID,
+                            Tables.ARTICLES.USER_ID)
+                    .values(
+                            article.getTitle(),
+                            article.getDate(),
+                            article.getDescription(),
+                            article.getRating(),
+                            article.getSourceLink(),
+                            article.getName(),
+                            article.getApproved(),
+                            article.getImage(),
+                            article.getCategoryId(),
+                            article.getUserId())
+                    .execute();
+        }
     }
 
     @Override
@@ -132,6 +139,20 @@ public class ArticleService implements GenericRepository<Articles> {
         updateStep.where(Tables.ARTICLES.ID.eq(articleId));
 
         return updateStep.execute();
+    }
+
+    private boolean containsBadWords(Articles article) {
+        List<String> badWords = Arrays.asList("fuck", "sex", "shit", "kys", "dick");
+
+        String textToCheck = article.getTitle() + " " + article.getDescription() + " " + article.getName();
+
+        for (String badWord : badWords) {
+            if (textToCheck.toLowerCase().contains(badWord.toLowerCase())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
