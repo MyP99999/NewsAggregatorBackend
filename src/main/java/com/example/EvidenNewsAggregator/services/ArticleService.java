@@ -27,6 +27,8 @@ public class ArticleService implements GenericRepository<Articles> {
     public void add(Articles article) {
         if (containsBadWords(article)) {
             throw new IllegalArgumentException("The article contains inappropriate content.");
+        } else if (isFieldLengthValid(article)) {
+            throw new IllegalArgumentException("One or more fields in the article exceed the maximum allowed length.");
         } else {
             dslContext.insertInto(Tables.ARTICLES,
                             Tables.ARTICLES.TITLE,
@@ -52,6 +54,16 @@ public class ArticleService implements GenericRepository<Articles> {
                             article.getUserId())
                     .execute();
         }
+    }
+
+    private boolean isFieldLengthValid(Articles article) {
+        int maxTitleLength = 30;
+        int maxDescriptionLength = 400;
+        int maxNameLength = 30;
+
+        return article.getTitle().length() > maxTitleLength ||
+                article.getDescription().length() > maxDescriptionLength ||
+                article.getName().length() > maxNameLength;
     }
 
     @Override
@@ -142,17 +154,30 @@ public class ArticleService implements GenericRepository<Articles> {
     }
 
     private boolean containsBadWords(Articles article) {
-        List<String> badWords = Arrays.asList("fuck", "sex", "shit", "kys", "dick");
+        List<String> badWords = Arrays.asList("anal", "kys");
+        List<String> badWordParts = Arrays.asList("fuck", "sex", "shit", "dick");
 
         String textToCheck = article.getTitle() + " " + article.getDescription() + " " + article.getName();
+        String[] words = textToCheck.toLowerCase().split("\\s+");
 
         for (String badWord : badWords) {
-            if (textToCheck.toLowerCase().contains(badWord.toLowerCase())) {
+            for (String word : words) {
+                // Check for standalone bad words
+                if (word.equals(badWord.toLowerCase())) {
+                    return true;
+                }
+            }
+        }
+
+        for (String badWordPart : badWordParts) {
+            if (textToCheck.toLowerCase().contains(badWordPart.toLowerCase())) {
                 return true;
             }
         }
 
         return false;
     }
+
+
 
 }
